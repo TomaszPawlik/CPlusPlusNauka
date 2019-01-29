@@ -150,6 +150,68 @@ int tapeEquilibrium (vector<int> &A){
     return abs(leftEleSum-(allVecElemSum-leftEleSum));
 }
 
+int permCheck(vector<int> &A){
+    int vectorElementsSum = 0;
+    int helpTab[A.size()];
+    int sumFrom1ToN = (A.size()*(A.size()+1))/2;
+
+    for (int i=0;i<A.size();i++)
+        helpTab[i]=0;
+
+    for (vector<int>::iterator it=A.begin();it!=A.end();it++){
+        if(helpTab[*it-1]==1)
+            return 0;
+        helpTab[*it-1]=1;
+        vectorElementsSum+=*it;
+    }
+
+    if (vectorElementsSum==sumFrom1ToN)
+        return 1;
+    else return 0;
+}
+
+int frogRiverOne(int x, vector<int> &A){    // x = distance
+    int seconds=0, path=0;
+    int helpTab[x];
+    for (int i=0;i<x;i++)
+        helpTab[i]=0;
+
+    for (vector<int>::iterator it=A.begin();it!=A.end();it++){
+        seconds++;
+        helpTab[*it-1]=1;
+        for (int i=0;i<x;i++)
+            path += helpTab[i];
+        if (path==x)
+            return seconds;
+        else{
+            path=0;
+        }
+    }
+    return -1;
+}
+
+int missingInteger(vector<int> &A){
+    //returnNumber=1;
+    vector<int> B = A;
+    sort(B.begin(),B.end());
+    B.erase( unique(B.begin(), B.end()), B.end());
+    vector<int>::iterator it = B.begin();
+
+//    while (*it==returnNumber){
+//        it++;
+//        returnNumber++;
+//    }
+//    return returnNumber;
+
+    for (int i=1;i<B.size()+1;i++){
+        if (*it!=i)
+            return i;
+        else
+            it++;
+    }
+    return *it+1;
+}
+
 int main()
 {
     //Zadanie H2
@@ -214,4 +276,22 @@ int main()
     //8
     vector<int> intTab6 = {3,1,2,4,3};
     cout << "Minimal difference between array values: " << tapeEquilibrium(intTab6);
+    cout << mySpace;
+
+    //9
+    vector<int> intTab7 = {3,2,1,4};
+    vector<int> intTab8 = {4,1,2};
+    cout << "Array 1 is permutation: " << permCheck(intTab7) << endl;
+    cout << "Array 2 is permutation: " << permCheck(intTab8);
+    cout << mySpace;
+
+    //10
+    vector<int> intTab9 = {1,3,1,4,2,3,5,4};
+    cout << "Frog will jump to other side in X moves (-1 if its impossible to cross): " << frogRiverOne(5, intTab9);
+    cout << mySpace;
+
+    //11
+    vector<int> intTab10 = {1,3,6,4,1,2};
+    cout << "Smallest missing integer is: " << missingInteger(intTab10);
+    cout << mySpace;
 }
